@@ -1,0 +1,66 @@
+.root {
+    flex-grow: 1;
+}
+
+.search-field {
+    flex-grow: 1;
+    min-width: 100px;
+}
+
+.message-container {
+    padding: 16px;
+}
+
+.message-label {
+    color: rgb(180, 180, 180);
+    -unity-font-style: italic;
+}
+
+.package-list {
+    flex-grow: 1;
+}
+
+.package-item {
+    flex-direction: row;
+    align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(128, 128, 128, 0.3);
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.package-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.package-icon {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(80, 80, 80, 0.5);
+    border-radius: 4px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.package-info {
+    flex-grow: 1;
+    margin-left: 12px;
+    justify-content: center;
+}
+
+.package-display-name {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: rgb(220, 220, 220);
+}
+
+.package-id {
+    font-size: 11px;
+    color: rgb(128, 128, 128);
+    margin-top: 2px;
+}
+
+.hidden {
+    display: none;
+}

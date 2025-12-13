@@ -1,0 +1,13 @@
+{
+    "name": "{PACKAGE_ID}",
+    "version": "{VERSION}",
+    "displayName": "{DISPLAY_NAME}",
+    "description": "",
+    "unity": "{UNITY_VERSION}",
+    "readme": "README.md",
+    "license": "MIT",
+    "author": {
+        "name": "{ORGANIZATION}"
+    }
+}
+

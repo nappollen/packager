@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Packages/nappollen.packager/Resources/Packager.uss?fileID=7433441132597879392&amp;guid=201c44fef74f7d4479dd412b8dbcfe11&amp;type=3#Packager" />
+    <ui:VisualElement class="package-item">
+        <ui:VisualElement class="package-icon" />
+        <ui:VisualElement class="package-info">
+            <ui:Label name="display-name" class="package-display-name" />
+            <ui:Label name="package-id" class="package-id" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

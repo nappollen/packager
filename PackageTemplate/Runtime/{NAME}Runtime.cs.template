@@ -1,0 +1,10 @@
+namespace {ROOT_NAMESPACE} {
+	public static class {NAME}Constants {
+		public static string Version => "{VERSION}";
+		public static string DisplayName => "{DISPLAY_NAME}";
+		public static string RootNamespace => "{ROOT_NAMESPACE}";
+		public static string Name => "{NAME}";
+		public static string Organization => "{ORGANIZATION}";
+	}
+}
+

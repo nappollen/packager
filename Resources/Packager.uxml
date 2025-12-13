@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Packages/nappollen.packager/Resources/Packager.uss?fileID=7433441132597879392&amp;guid=201c44fef74f7d4479dd412b8dbcfe11&amp;type=3#Packager" />
+    <ui:VisualElement class="root">
+        <uie:Toolbar>
+            <uie:ToolbarSearchField name="search-field" />
+            <uie:ToolbarSpacer style="flex-grow: 1;" />
+            <uie:ToolbarButton name="new-button" text="New" />
+            <uie:ToolbarButton name="refresh-button" text="Refresh" />
+        </uie:Toolbar>
+        <ui:VisualElement name="loading-container" class="message-container">
+            <ui:Label text="Loading packages..." class="message-label" />
+        </ui:VisualElement>
+        <ui:VisualElement name="empty-container" class="message-container hidden">
+            <ui:Label text="No packages found." class="message-label" />
+        </ui:VisualElement>
+        <ui:VisualElement name="no-match-container" class="message-container hidden">
+            <ui:Label text="No packages match the filter." class="message-label" />
+        </ui:VisualElement>
+        <ui:ScrollView name="package-list" class="package-list hidden" />
+    </ui:VisualElement>
+</ui:UXML>

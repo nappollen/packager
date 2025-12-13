@@ -1,0 +1,12 @@
+{
+  "name": "nappollen.packager",
+  "displayName": "Nappollen Packager",
+  "version": "0.0.2",
+  "unity": "2022.3",
+  "description": "A package to help create VPM packages.",
+  "author": {
+    "name": "Nappollen",
+    "email": "developer@nappollen.dev",
+    "url": "https://github.com/nappollen/packages"
+  }
+}

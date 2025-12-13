@@ -1,0 +1,12 @@
+using UnityEditor;
+using UnityEngine;
+
+namespace {ROOT_NAMESPACE}.Editor {
+	public static class {NAME}Editor {
+		[MenuItem("{DISPLAY_NAME}/About")]
+		public static void About() {
+			Debug.Log($"{{NAME}Constants.DisplayName} v" + {NAME}Constants.Version);
+		}
+	}
+}
+
