@@ -18,16 +18,16 @@ namespace Nappollen.Packager {
 			set => EditorPrefs.SetBool(GpgEnabledPrefKey, value);
 		}
 		
-		[MenuItem("Tools/Nappollen/Packager/Enable GPG Signing")]
+		[MenuItem("Tools/Nappollen Packager/Enable GPG Signing")]
 		private static void ToggleGpgSigning() {
 			GpgSigningEnabled = !GpgSigningEnabled;
 			var status = GpgSigningEnabled ? "enabled" : "disabled";
 			Debug.Log($"GPG signing {status}.");
 		}
 		
-		[MenuItem("Tools/Nappollen/Packager/Enable GPG Signing", true)]
+		[MenuItem("Tools/Nappollen Packager/Enable GPG Signing", true)]
 		private static bool ToggleGpgSigningValidate() {
-			Menu.SetChecked("Tools/Nappollen/Packager/Enable GPG Signing", GpgSigningEnabled);
+			Menu.SetChecked("Tools/Nappollen Packager/Enable GPG Signing", GpgSigningEnabled);
 			return true;
 		}
 
