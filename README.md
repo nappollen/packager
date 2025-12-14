@@ -2,6 +2,9 @@
 
 A Unity Editor tool to help create and manage packages.
 
+![Preview](./preview.png)
+
+
 ## Features
 
 - **Package Browser** - View and manage all local packages in your Unity project

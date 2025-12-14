@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
@@ -8,12 +10,29 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 namespace Nappollen.Packager {
 	public static class PackageExporter {
 		public const string OutputFolder = "PackageExports";
-
+		
+		private const string GpgEnabledPrefKey = "Nappollen.Packager.GpgSigningEnabled";
+		
+		public static bool GpgSigningEnabled {
+			get => EditorPrefs.GetBool(GpgEnabledPrefKey, true);
+			set => EditorPrefs.SetBool(GpgEnabledPrefKey, value);
+		}
+		
+		[MenuItem("Tools/Nappollen/Packager/Enable GPG Signing")]
+		private static void ToggleGpgSigning() {
+			GpgSigningEnabled = !GpgSigningEnabled;
+			var status = GpgSigningEnabled ? "enabled" : "disabled";
+			Debug.Log($"GPG signing {status}.");
+		}
+		
+		[MenuItem("Tools/Nappollen/Packager/Enable GPG Signing", true)]
+		private static bool ToggleGpgSigningValidate() {
+			Menu.SetChecked("Tools/Nappollen/Packager/Enable GPG Signing", GpgSigningEnabled);
+			return true;
+		}
 
 		public static void ExportPackage(PackageInfo package, string outputFolder = OutputFolder) {
-			var packageId = package.name;
-			var version   = package.version;
-			var baseName  = $"{packageId}-{version}";
+			var baseName = $"{package.name}-{package.version}";
 
 			if (!Directory.Exists(outputFolder))
 				Directory.CreateDirectory(outputFolder);
@@ -39,10 +58,133 @@ namespace Nappollen.Packager {
 			var unityPackagePath = Path.Combine(outputPath, $"{baseName}.unitypackage");
 			CreateUnityPackage(package, unityPackagePath);
 
+			// Créer le manifest avec les hashs
+			var manifestPath = Path.Combine(outputPath, "MANIFEST.txt");
+			CreateManifest(manifestPath, outputPath, package);
+
 			// Ouvrir le dossier de sortie
 			EditorUtility.RevealInFinder(outputPath);
 
 			Debug.Log($"Package exported to: {outputPath}");
+		}
+
+		private static void CreateManifest(string manifestPath, string outputPath, PackageInfo package) {
+			var sb = new System.Text.StringBuilder();
+			
+			sb.AppendLine($"Package: {package.name}");
+			sb.AppendLine($"Version: {package.version}");
+			sb.AppendLine($"Date: {DateTime.Now:yyyy-MM-dd HH:mm:ss} UTC");
+			sb.AppendLine($"Generator: Nappollen.Packager");
+			sb.AppendLine();
+			sb.AppendLine("Files:");
+			
+			foreach (var file in Directory.GetFiles(outputPath)) {
+				if (Path.GetFileName(file) == "MANIFEST.txt") continue;
+				if (Path.GetFileName(file) == "MANIFEST.txt.asc") continue;
+				
+				var fileName = Path.GetFileName(file);
+				var sha256 = ComputeSha256(file);
+				var sha512 = ComputeSha512(file);
+				var fileSize = new FileInfo(file).Length;
+				
+				sb.AppendLine();
+				sb.AppendLine($"  {fileName}");
+				sb.AppendLine($"    Size: {fileSize} bytes");
+				sb.AppendLine($"    SHA256: {sha256}");
+				sb.AppendLine($"    SHA512: {sha512}");
+			}
+			
+			File.WriteAllText(manifestPath, sb.ToString());
+			
+			// Signer avec GPG si activé et disponible
+			if (GpgSigningEnabled && IsGpgAvailable()) {
+				SignManifestWithGpg(manifestPath);
+			}
+		}
+
+		private static string _gpgPath;
+
+		private static bool IsGpgAvailable() {
+			_gpgPath = FindGpgPath();
+			return _gpgPath != null;
+		}
+
+		private static string FindGpgPath() {
+			// Chemins courants pour GPG
+			var possiblePaths = new[] {
+				"gpg", // Dans le PATH
+				@"C:\Program Files (x86)\GnuPG\bin\gpg.exe",
+				@"C:\Program Files\GnuPG\bin\gpg.exe",
+				@"C:\Program Files (x86)\gnupg\bin\gpg.exe",
+				@"C:\Program Files\gnupg\bin\gpg.exe",
+				Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "GnuPG", "bin", "gpg.exe"),
+				Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "GnuPG", "bin", "gpg.exe"),
+				Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GnuPG", "bin", "gpg.exe"),
+			};
+
+			return possiblePaths.FirstOrDefault(TryRunGpg);
+		}
+
+		private static bool TryRunGpg(string gpgPath) {
+			try {
+				var process = new System.Diagnostics.Process {
+					StartInfo = new System.Diagnostics.ProcessStartInfo {
+						FileName = gpgPath,
+						Arguments = "--version",
+						UseShellExecute = false,
+						RedirectStandardOutput = true,
+						RedirectStandardError = true,
+						CreateNoWindow = true
+					}
+				};
+				process.Start();
+				process.WaitForExit(2000);
+				return process.ExitCode == 0;
+			} catch {
+				return false;
+			}
+		}
+
+		private static void SignManifestWithGpg(string manifestPath) {
+			if (string.IsNullOrEmpty(_gpgPath)) return;
+			
+			try {
+				var process = new System.Diagnostics.Process {
+					StartInfo = new System.Diagnostics.ProcessStartInfo {
+						FileName = _gpgPath,
+						Arguments = $"--armor --detach-sign \"{manifestPath}\"",
+						UseShellExecute = false,
+						RedirectStandardOutput = true,
+						RedirectStandardError = true,
+						CreateNoWindow = true
+					}
+				};
+				process.Start();
+				process.WaitForExit(10000);
+				
+				if (process.ExitCode == 0) {
+					Debug.Log("Manifest signed with GPG successfully.");
+				} else {
+					var error = process.StandardError.ReadToEnd();
+					Debug.LogWarning($"GPG signing failed: {error}");
+				}
+			} catch (Exception e) {
+				Debug.LogWarning($"Failed to sign manifest with GPG: {e.Message}");
+			}
+		}
+
+		private static string ComputeSha256(string filePath) {
+			using var sha256 = System.Security.Cryptography.SHA256.Create();
+			using var stream = File.OpenRead(filePath);
+			var hash = sha256.ComputeHash(stream);
+			return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+		}
+
+		private static string ComputeSha512(string filePath) {
+			using var sha512 = System.Security.Cryptography.SHA512.Create();
+			using var stream = File.OpenRead(filePath);
+			var hash = sha512.ComputeHash(stream);
+			return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 		}
 
 		private static void CreateZip(string sourcePath, string zipPath) {

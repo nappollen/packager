@@ -1,12 +1,12 @@
 {
   "name": "nappollen.packager",
   "displayName": "Nappollen Packager",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "unity": "2022.3",
-  "description": "A package to help create VPM packages.",
+  "description": "A Unity package manager to create, export and manage local packages with templates, GPG signing and hash verification.",
   "author": {
     "name": "Nappollen",
-    "email": "developer@nappollen.dev",
-    "url": "https://github.com/nappollen/packages"
-  }
+    "url": "https://nappollen.github.io/vpm"
+  },
+  "url": "https://github.com/nappollen/packager"
 }

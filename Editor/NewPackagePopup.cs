@@ -67,9 +67,8 @@ namespace Nappollen.Packager {
 		}
 
 		private void UpdatePreview(string packageId) {
-			var parts = packageId.Split('.');
+			var parts = packageId.Replace("-", ".").Split('.');
 			
-			// Ne sauter le premier élément que s'il a 3 caractères ou moins (com, org, net, io, dev...)
 			if (parts.Length > 1 && parts[0].Length <= 3)
 				parts = parts.Skip(1).ToArray();
 			
@@ -79,11 +78,8 @@ namespace Nappollen.Packager {
 				return;
 			}
 
-			var displayName = string.Join(" ", parts.Select(s => s.Length > 0 ? char.ToUpper(s[0]) + s[1..] : s));
-			var rootNamespace = string.Join(".", parts.Select(s => s.Length > 0 ? char.ToUpper(s[0]) + s[1..] : s));
-
-			_displayNamePreview.text = $"Display Name: {displayName}";
-			_namespacePreview.text = $"Namespace: {rootNamespace}";
+			_displayNamePreview.text = $"Display Name: {PackageCreator.ToDisplayName(packageId)}";
+			_namespacePreview.text = $"Namespace: {PackageCreator.ToRootNamespace(packageId)}";
 		}
 
 		private void CreatePackage() {
