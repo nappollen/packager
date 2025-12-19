@@ -1,0 +1,33 @@
+# IDE
+.idea/
+.vs/
+*.csproj
+*.sln
+*.user
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+*~
+
+# Temp files
+_*/
+*.tmp
+*.temp
+*.bak
+*.swp
+*.log
+
+# Build
+[Bb]uild/
+[Bb]in/
+[Oo]bj/
+
+# Package specific
+_*
+
+CHANGELOG.md.meta
+LICENSE.meta
+README.md.meta
