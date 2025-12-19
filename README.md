@@ -10,6 +10,7 @@ A Unity Editor tool to help create and manage packages.
 - **Package Browser** - View and manage all local packages in your Unity project
 - **Package Creator** - Quickly create new packages from a template with proper structure
 - **Package Exporter** - Export packages as `.unitypackage`, `.zip`, and `package.json` files
+- **GPG Signing** - Sign exported packages for integrity verification
 
 ## Installation
 
@@ -51,6 +52,13 @@ Go to **Nappollen > Packager** in the Unity menu bar.
 
 1. Click on a package in the list
 2. The `.unitypackage`, `.zip` and package.json files will be created
+
+### GPG Signing & Enable/Disable feature
+
+1. To enable GPG signing, check **Tools/Nappollen Packager/Enable GPG Signing** in the Unity menu bar.
+2. When exporting a package, if GPG signing is enabled, a `.sig` file will be generated alongside the exported package.
+
+For GPG signing to work, ensure that GPG is installed on your system and properly configured.
 
 ## Requirements
 
