@@ -6,6 +6,7 @@
     "unity": "{UNITY_VERSION}",
     "readme": "README.md",
     "license": "MIT",
+    "url": "https://github.com/{-ORGANIZATION}/{-REPOSITORY}",
     "author": {
         "name": "{ORGANIZATION}"
     }

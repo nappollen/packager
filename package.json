@@ -1,8 +1,10 @@
 {
   "name": "nappollen.packager",
   "displayName": "Nappollen Packager",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "unity": "2022.3",
+  "license": "MIT",
+  "readme": "README.md",
   "description": "A Unity package manager to create, export and manage local packages with templates, GPG signing and hash verification.",
   "author": {
     "name": "Nappollen",

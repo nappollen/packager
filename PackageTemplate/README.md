@@ -1,6 +1,6 @@
 # {DISPLAY_NAME}
 
-{PACKAGE_ID} v1.0.0
+{PACKAGE_ID}
 
 ## Description
 
@@ -12,14 +12,14 @@ Add your package description here.
 
 1. Open the Package Manager window
 2. Click the "+" button and select "Add package from git URL..."
-3. Enter: `https://github.com/{-ORGANIZATION}/{-NAME}.git`
+3. Enter: `https://github.com/{-ORGANIZATION}/{-REPOSITORY}.git`
 
 ### Via manifest.json
 
 Add the following line to your `Packages/manifest.json`:
 
 ```json
-"{PACKAGE_ID}": "https://github.com/{-ORGANIZATION}/{-NAME}.git"
+"{PACKAGE_ID}": "https://github.com/{-ORGANIZATION}/{-REPOSITORY}.git"
 ```
 
 ## Usage
