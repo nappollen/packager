@@ -1,7 +1,7 @@
 {
   "name": "nappollen.packager",
   "displayName": "Nappollen Packager",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "unity": "2022.3",
   "license": "MIT",
   "readme": "README.md",
